@@ -1,6 +1,6 @@
 import pytest
 from model.lovecraft_texter import LovecraftTexter
-from exceptions.stumped_lovecraft_exception
+from exceptions.stumped_lovecraft_exception import StumpedLovecraftException
 
 def test_model_with_greeting():
     greeting = "Hello there!"
