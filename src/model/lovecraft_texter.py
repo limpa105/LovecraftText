@@ -1,9 +1,9 @@
-from lovecraft_model import LovecraftModel
-from processing.preprocess import Preprocessor
+from src.model.lovecraft_model import LovecraftModel
+from src.processing.preprocess import Preprocessor
 import random, copy
 import nltk
 from nltk.corpus import words
-from exceptions.stumped_lovecraft_exception import StumpedLovecraftException
+from src.exceptions.stumped_lovecraft_exception import StumpedLovecraftException
 
 class LovecraftTexter:
     """Defines API for a texter object which text like Lovecraft"""
