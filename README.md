@@ -1,2 +1,2 @@
 # LovecraftText
-Deep learning style transfer from Lovecraft to modern day text messages. Pair coded with @gilpasternak35
+A weekend Hackathon utilizing HuggingFace models to generate LoveCraft style text responses. Pair coded with @gilpasternak35
