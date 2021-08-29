@@ -1,7 +1,7 @@
 import nltk
 import random
 import spacy
-
+import en_core_web_sm
 
 class Preprocessor:
 
@@ -29,15 +29,15 @@ class Preprocessor:
         """
         # Splitting text so that it can be tokenized
         word_list = text.split(" ")
-        spacy_model = spacy.load('en')
+        spacy_model = spacy.load('en_core_web_sm')
         doc = spacy_model(text)
         # We want to maintain pobj tokens and punctuation - does not make sense to replace as changes subject
-        not_to_replace = [tok for tok in doc if (tok.dep_ == "pobj" or tok.dep_ == "punct")]
-        i = random.randint(0, len(str)-1)
+        not_to_replace = [tok.text for tok in doc if (tok.dep_ == "attr" or tok.dep_ == "dobj" or tok.dep_ == "punct")]
+        i = random.randint(0, len(word_list)-1)
         iters = 0 # To avoid inifinite loop if all word are irreplacable
         while word_list[i] in not_to_replace:
             iters+=1
-            i = random.randint(0, len(str)-1)
+            i = random.randint(0, len(word_list)-1)
             if (iters > 5):
                 i = 0
                 break
@@ -48,22 +48,24 @@ class Preprocessor:
 
     def find_similar_sentence(text: str, corpus_list: list) -> list:
         # Defining a spacy model to label entities
-        spacy_model = spacy.load('en')
+        spacy_model = spacy.load("en_core_web_sm")
         doc = spacy_model(text)
 
         # Defining important tokens
-        important = [tok for tok in doc if (tok.dep_ == "pobj")]
+        important = [tok for tok in doc if (tok.dep_ == "attr")]
         if important == []:
-            important = [tok for tok in doc if (tok.dep_ == "ROOT")]
+            important = [tok for tok in doc if (tok.dep_ == "nsubj" or tok.dep_ == "pobj")]
+        if important == []:
+            important = [doc[0]] # Failure prevention
 
         # Choosing one important token at random
-        chosen_important = important[random.randint(0,len(important))]
+        chosen_important = important[random.randint(0,len(important)-1)]
 
         # Matching up
         # TODO: optimize
         random.shuffle(corpus_list)
         for sen in corpus_list:
-            if chosen_important in sen:
+            if chosen_important.text in sen:
                 return sen
 
         # if no match is found return random
