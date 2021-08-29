@@ -1,8 +1,12 @@
 from src.model.lovecraft_texter import LovecraftTexter
 from src.exceptions.stumped_lovecraft_exception import StumpedLovecraftException
 
+
 class TexterTest:
+    """Test class for LovecraftTexter (implicitly tests model and preprocessing)"""
+
     DATAPATH = "/Users/elizavetapertseva/Documents/Lovecraft/LovecraftText/src/model/data/lovecraft_corpus.txt"
+
     @staticmethod
     def run_tests():
         TexterTest.test_model_with_numbers()
@@ -81,6 +85,3 @@ class TexterTest:
             assert not CAUGHT_EXCEPTION
         except StumpedLovecraftException as e:
             assert CAUGHT_EXCEPTION
-
-if __name__ == "__main__":
-    TexterTest.run_tests()

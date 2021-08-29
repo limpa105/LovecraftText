@@ -5,14 +5,16 @@ import nltk
 from nltk.corpus import words
 from src.exceptions.stumped_lovecraft_exception import StumpedLovecraftException
 
+
 class LovecraftTexter:
     """Defines API for a texter object which text like Lovecraft"""
     def __init__(self, data_path:str):
         self.model = LovecraftModel()
-        self.data = self._load_data(data_path)
+        self.data = LovecraftTexter._load_data(data_path)
         self._preprocess()
 
-    def _load_data(self, data_path: str):
+    @staticmethod
+    def _load_data(data_path: str):
         """
         Loads data given datapath
         :param data_path: A path with which to access the data
@@ -37,10 +39,11 @@ class LovecraftTexter:
         Checks that the message is in English and not Gibberish
         :param message: the message inputed
         """
-        if not isinstance(message, str):
+        # Input validation for non-string inputs
+        if message is None or len(message) == 0 or not isinstance(message, str):
             raise StumpedLovecraftException()
 
-    def respond(self, message: str):
+    def respond(self, message: str) -> str:
         """
         Responds to a given input message
         :param message: A message to respond to
@@ -58,7 +61,14 @@ class LovecraftTexter:
         sentence = ""
         # Masking
         for i in range(num_masks):
+            # Add a single mask onto text
             masked_sentence = "  ".join(Preprocessor.add_mask_at_random(closest_sentence))
+
+            # Fill mask
             sentence = self.model.fill_masks(masked_sentence)
+
+            # Continue while there are still masks to place
             closest_sentence = sentence
+
+        # Return edited Lovecraft output
         return sentence

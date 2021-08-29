@@ -1,6 +1,7 @@
 
 class StumpedLovecraftException(Exception):
     """Custom Lovecraft bad input exception"""
+
     def __str__(self):
         """
         :return: string representation of bad inputs error
